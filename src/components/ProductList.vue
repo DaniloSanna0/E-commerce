@@ -22,12 +22,21 @@
     </div>
 </template>
 <script setup>
-import { products } from '../../db.json'
+// import { products } from '../../db.json'
 import { useUserCartStore } from '../stores/userCart.store'
 import { computed, ref } from 'vue'
 
 const serchedValue = ref(null)
 const store = useUserCartStore()
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('/api/products');
+        products.value = response.data;
+    } catch (error) {
+        console.error("Errore nel caricamento dei prodotti:", error);
+    }
+});
 
 const filteredProducts = computed(() => {
   const searchTerm = serchedValue.value ? serchedValue.value.toLowerCase() : ''
