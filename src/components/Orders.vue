@@ -17,19 +17,37 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { orders } from '../../db.json';
+// import { orders } from '../../db.json';
+import axios from 'axios';
 
 const nodes = ref([]);
 
 onMounted(() => {
-  nodes.value = orders.map(order => ({
-    data: {
-      id: order.id,
-      createdAt: new Date(order.createdAt).toLocaleDateString(),
-      products: totalQuantity(order.products),
-      total: order.total,
-    }
-  }));
+  // nodes.value = orders.map(order => ({
+  //   data: {
+  //     id: order.id,
+  //     createdAt: new Date(order.createdAt).toLocaleDateString(),
+  //     products: totalQuantity(order.products),
+  //     total: order.total,
+  //   }
+  // }));
+  try {
+    // Effettua la richiesta al backend per ottenere gli ordini
+    const response = await axios.get('/api/orders');
+    const orders = response.data;
+
+    // Mappa gli ordini in formato adatto per TreeTable
+    nodes.value = orders.map(order => ({
+      data: {
+        id: order.id,
+        createdAt: new Date(order.createdAt).toLocaleDateString(),
+        products: totalQuantity(order.products),
+        total: order.total,
+      }
+    }));
+  } catch (error) {
+    console.error("Errore nel caricamento degli ordini:", error);
+  }
 });
 
 const totalQuantity = (products) => {
