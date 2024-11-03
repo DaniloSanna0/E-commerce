@@ -19,7 +19,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 // import { orders } from '../../db.json';
-import axios from 'axios';
+import axios from '../api/axios';
 
 const nodes = ref([]);
 
@@ -33,8 +33,8 @@ onMounted(() => {
   //   }
   // }));
   try {
-    const response = axios.get('/api/orders');
-    const orders = response.data;
+    const response = axios.get('/orders');
+    const orders = response.data || [];
 
     nodes.value = orders.map(order => ({
       data: {
