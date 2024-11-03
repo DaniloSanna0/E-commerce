@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <!-- <div>
     <div v-for="(order, index) in orders" :key="index" class="border">
@@ -32,11 +33,9 @@ onMounted(() => {
   //   }
   // }));
   try {
-    // Effettua la richiesta al backend per ottenere gli ordini
-    const response = await axios.get('/api/orders');
+    const response = axios.get('/api/orders');
     const orders = response.data;
 
-    // Mappa gli ordini in formato adatto per TreeTable
     nodes.value = orders.map(order => ({
       data: {
         id: order.id,
